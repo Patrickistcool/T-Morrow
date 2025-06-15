@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>T-Shirt Store</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans">
+
+  <!-- Header -->
+  <header class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-12 mb-12">
+    <div class="max-w-6xl mx-auto text-center px-4">
+      <h1 class="text-5xl font-extrabold mb-2">T-Morrow</h1>
+      <p class="text-lg text-purple-100">Stylish • Comfy • Affordable</p>
+      <nav class="mt-4">
+        <a href="#about" class="text-purple-200 hover:text-white mx-2">About</a>
+        <a href="info.html" class="text-purple-200 hover:text-white mx-2">Informations</a>
+        <a href="team.html" class="text-purple-200 hover:text-white mx-2">Team</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="p-6 max-w-6xl mx-auto">
+    <div class="flex justify-between items-center mb-8">
+      <h2 class="text-3xl font-bold">Shop T-Shirts</h2>
+      <button onclick="toggleCart()" class="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800">
+        🛒 View Cart (<span id="cart-count">0</span>)
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <!-- T-Shirt Items -->
+      <div class="bg-white shadow rounded-2xl overflow-hidden p-4 transform transition hover:scale-105 hover:shadow-2xl duration-300">
+        <img src="EP19-WH-Klimaneutrales-weisses-T-Shirt-schwerer-Stoff-Biobaumwolle-oversize.jpg" class="w-full h-64 object-cover mb-4" />
+        <h3 class="text-xl font-semibold">Classic White T-Shirt</h3>
+        <p class="text-lg mb-2">€24.99</p>
+        <button onclick="addToCart('Classic White T-Shirt', 24.99)" class="bg-black text-white w-full py-2 rounded-lg">Add to Cart</button>
+      </div>
+
+      <div class="bg-white shadow rounded-2xl overflow-hidden p-4 transform transition hover:scale-105 hover:shadow-2xl duration-300">
+        <img src="schwarzes-heavy-tshirt-schwarz-schwer-black-unisex-herren-bio-baumwolle-global-organic-textile-standard-gots-U171-002.jpg" class="w-full h-64 object-cover mb-4" />
+        <h3 class="text-xl font-semibold">Black T-Shirt</h3>
+        <p class="text-lg mb-2">€24.99</p>
+        <button onclick="addToCart('Black T-Shirt', 24.99)" class="bg-black text-white w-full py-2 rounded-lg">Add to Cart</button>
+      </div>
+
+      <div class="bg-white shadow rounded-2xl overflow-hidden p-4 transform transition hover:scale-105 hover:shadow-2xl duration-300">
+        <img src="71tv29uc9NL._AC_UY1000_.jpg" class="w-full h-64 object-cover mb-4" />
+        <h3 class="text-xl font-semibold">Graphic T-Shirt</h3>
+        <p class="text-lg mb-2">$29.99</p>
+        <button onclick="addToCart('Graphic T-Shirt', 29.99)" class="bg-black text-white w-full py-2 rounded-lg">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- About Section -->
+  <section id="about" class="mt-16 bg-white py-12 border-t">
+    <div class="max-w-4xl mx-auto text-center px-4">
+      <h2 class="text-3xl font-bold mb-4">About Our Store</h2>
+      <p class="text-lg text-gray-700 mb-2">
+        Our mission is to make a bold statement for environmental awareness through creative upcycled fashion.
+        We transform discarded clothing into stylish unisex streetwear, proving that sustainability and style can go hand in hand.
+        Each piece represents resourcefulness, individuality, and responsibility — inspiring people to rethink what fashion can be.
+        At the same time, we aim to create real social impact: Two-thirds of our profits are donated to selected charitable organizations supporting environmental and social causes.
+        We don’t just make new clothes out of the old — we make something meaningful.
+      </p>
+      <p class="text-lg text-gray-700">
+        Just by buying a T-shirt you can help people around the world and get a new piece of clothing
+      </p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="mt-24 bg-gray-900 text-white text-center py-8">
+    <p class="text-sm">
+      © 2025 T-Morrow. All rights reserved. | Designed using Tailwind CSS
+    </p>
+  </footer>
+
+  <!-- Cart Sidebar -->
+  <div id="cart-sidebar" class="fixed top-0 right-0 w-80 h-full bg-white shadow-lg p-6 transform translate-x-full transition-transform duration-300 z-50">
+    <h2 class="text-2xl font-bold mb-4">Your Cart</h2>
+    <ul id="cart-items" class="space-y-4"></ul>
+    <div class="mt-6 border-t pt-4">
+      <p class="text-lg font-semibold">Total: $<span id="cart-total">0.00</span></p>
+      <button class="mt-4 w-full bg-black text-white py-2 rounded-lg">Checkout</button>
+    </div>
+    <button onclick="toggleCart()" class="absolute top-4 right-4 text-gray-500 text-xl">&times;</button>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    const cart = [];
+
+    function addToCart(name, price) {
+      cart.push({ name, price });
+      updateCartDisplay();
+    }
+
+    function updateCartDisplay() {
+      const cartItems = document.getElementById('cart-items');
+      const cartCount = document.getElementById('cart-count');
+      const cartTotal = document.getElementById('cart-total');
+
+      cartItems.innerHTML = '';
+      let total = 0;
+
+      cart.forEach((item, index) => {
+        total += item.price;
+        const li = document.createElement('li');
+        li.className = 'flex justify-between items-center border-b pb-2';
+        li.innerHTML = `
+          <div>
+            <p class="font-semibold">${item.name}</p>
+            <p class="text-sm text-gray-600">$${item.price.toFixed(2)}</p>
+          </div>
+          <button onclick="removeFromCart(${index})" class="text-red-500 text-sm">Remove</button>
+        `;
+        cartItems.appendChild(li);
+      });
+
+      cartCount.textContent = cart.length;
+      cartTotal.textContent = total.toFixed(2);
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      updateCartDisplay();
+    }
+
+    function toggleCart() {
+      const cartSidebar = document.getElementById('cart-sidebar');
+      cartSidebar.classList.toggle('translate-x-full');
+    }
+  </script>
+</body>
+</html>
